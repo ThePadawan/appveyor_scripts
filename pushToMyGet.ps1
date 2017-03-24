@@ -9,7 +9,7 @@ function pushToMyGet
     $filePattern,
     [parameter(Mandatory=$true)]
     [String]
-    $envKeyApiKey
+    $apiKey
   )
   process
   {
@@ -22,15 +22,12 @@ function pushToMyGet
       return
     }
 
-    $matchingEnvKeys = Get-ChildItem Env: | Where-Object {$_.Name -eq $envKeyApiKey}
+    Write-Host "Using API key with length" $apiKey.Length
 
-    if ($matchingEnvKeys.Count -eq 0) {
-      Write-Host "Could not find Environment variable for MyGet feed at name" $envKeyApiKey "'"
+    if ($apiKey.Length -eq 0) {
+      Write-Host "API key has length 0, aboring."
       return
     }
-
-    $apiKey = $matchingEnvKeys[0].Value
-    Write-Host "Found API key with length" $apiKey.Length
 
     $matchingFiles | Foreach-Object {
       $directory = [io.path]::GetDirectoryName($_.FullName)
