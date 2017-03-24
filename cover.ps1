@@ -20,10 +20,11 @@ function cover
     }
 
     $matchingProjects | Foreach-Object {
-      $projectName = "src/"
-      $projectName += $_
+      # If $_ is "C:\foo\bar", $shortName will be "bar"
+      $shortName = Split-Path $_ -Leaf
+      $projectName = $_
       $projectName += "/"
-      $projectName += $_
+      $projectName += $shortName
       $projectName += ".csproj"
 
       .\OpenCover.*\tools\OpenCover.Console.exe -oldstyle -mergeoutput -register:user -target:"C:\Program Files\dotnet\dotnet.exe" -targetargs:"test $projectName" -returntargetcode -filter:$coverageFilter -hideskipped:all -output:coverage.xml -log:Verbose
