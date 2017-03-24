@@ -19,6 +19,11 @@ function cover
       return
     }
 
+    $currentDirectory = pwd
+    $coverageXmlPath = Join-Path $currentDirectory "coverage.xml"
+
+    Write-Host "Writing coverage to" $coverageXmlPath
+
     $matchingProjects | Foreach-Object {
       # If $_ is "C:\foo\bar", $shortName will be "bar"
       $shortName = Split-Path $_ -Leaf
@@ -28,9 +33,9 @@ function cover
       $projectName += $shortName
       $projectName += ".csproj"
 
-      .\OpenCover.*\tools\OpenCover.Console.exe -oldstyle -mergeoutput -register:user -target:"C:\Program Files\dotnet\dotnet.exe" -targetargs:"test $projectName" -returntargetcode -filter:$coverageFilter -hideskipped:all -output:coverage.xml -log:Verbose
+      .\OpenCover.*\tools\OpenCover.Console.exe -oldstyle -mergeoutput -register:user -target:"C:\Program Files\dotnet\dotnet.exe" -targetargs:"test $projectName" -returntargetcode -filter:$coverageFilter -hideskipped:all -output:$coverageXmlPath -log:Verbose
     }
 
-    codecov -f "coverage.xml" -X gcov
+    codecov -f $coverageXmlPath -X gcov
   }
 }
