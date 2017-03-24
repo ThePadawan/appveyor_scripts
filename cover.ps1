@@ -22,7 +22,8 @@ function cover
     $matchingProjects | Foreach-Object {
       # If $_ is "C:\foo\bar", $shortName will be "bar"
       $shortName = Split-Path $_ -Leaf
-      $projectName = $_
+      $projectName = ""
+      $projectName += $_
       $projectName += "/"
       $projectName += $shortName
       $projectName += ".csproj"
