@@ -10,7 +10,7 @@ function cover
   )
   process
   {
-    Set-PSDebug -Trace 1
+    Set-PSDebug -Trace 2
     $matchingProjects = ls $projectsPattern
 
     Write-Host "Found" $matchingProjects.Count "projects matching pattern '"$projectsPattern
