@@ -10,6 +10,7 @@ function cover
   )
   process
   {
+    Set-PSDebug -Trace 1
     $matchingProjects = ls $projectsPattern
 
     Write-Host "Found" $matchingProjects.Count "projects matching pattern '"$projectsPattern
@@ -35,7 +36,7 @@ function cover
 
       Write-Host "Covering project" $shortName " with coverage filter" $coverageFilter
 
-      .\OpenCover.*\tools\OpenCover.Console.exe -oldstyle -mergeoutput -register:user "-target:C:\Program Files\dotnet\dotnet.exe" "-targetargs:test $projectName" -returntargetcode "-filter:$coverageFilter" -hideskipped:all "-output:$coverageXmlPath" -log:Verbose
+      .\OpenCover.*\tools\OpenCover.Console.exe -oldstyle -mergeoutput -register:Path64 "-target:C:\Program Files\dotnet\dotnet.exe" "-targetargs:test $projectName" -returntargetcode "-filter:$coverageFilter" -hideskipped:all "-output:$coverageXmlPath" -log:All
     }
 
     codecov -f $coverageXmlPath -X gcov
