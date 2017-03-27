@@ -36,7 +36,7 @@ function cover
 
       Write-Host "Covering project" $shortName " with coverage filter" $coverageFilter
 
-      .\OpenCover.*\tools\OpenCover.Console.exe -oldstyle -mergeoutput -register:Path64 "-target:C:\Program Files\dotnet\dotnet.exe" "-targetargs:test $projectName" -returntargetcode "-filter:$coverageFilter" -hideskipped:all "-output:$coverageXmlPath" -log:All
+      .\OpenCover.*\tools\OpenCover.Console.exe -oldstyle -mergeoutput "-target:C:\Program Files\dotnet\dotnet.exe" "-targetargs:test $projectName" -returntargetcode "-filter:$coverageFilter" -hideskipped:all "-output:$coverageXmlPath" -log:All
     }
 
     codecov -f $coverageXmlPath -X gcov
