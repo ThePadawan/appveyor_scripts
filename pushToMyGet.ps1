@@ -9,6 +9,9 @@ function pushToMyGet
     $filePattern,
     [parameter(Mandatory=$true)]
     [String]
+    $feedName,
+    [parameter(Mandatory=$true)]
+    [String]
     $apiKey
   )
   process
@@ -35,10 +38,10 @@ function pushToMyGet
 
       Write-Host "Now publishing" $fullpath
 
-      $targetFeed = "https://www.myget.org/F/the_diary/api/v2/package"
+      $targetFeed = "https://www.myget.org/F/" + $feedName + "/api/v2/package"
 
       If ($_ -match "\.symbols\.") {
-        $targetFeed = "https://www.myget.org/F/the_diary/symbols/api/v2/package"
+        $targetFeed = "https://www.myget.org/F/" + $feedName + "/symbols/api/v2/package"
       }
 
       nuget push $fullpath $apiKey -Source $targetFeed
