@@ -13,7 +13,7 @@ function cover
   )
   process
   {
-    $matchingProjects = ls . -Recurse | Where-Object {$_.FullName -match $projectsPattern} | Select-Object {$_.FullName}
+    $matchingProjects = ls . -Recurse | Where-Object {$_.FullName -match $projectsPattern} | % {$_.FullName}
 
     Write-Host "Found" $matchingProjects.Count "projects matching pattern '"$projectsPattern "'"
 
