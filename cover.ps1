@@ -13,9 +13,9 @@ function cover
   )
   process
   {
-    $matchingProjects = ls . -Recurse | Where-Object {$_.FullName -match $projectsPattern}
+    $matchingProjects = ls . -Recurse | Where-Object {$_.FullName -match $projectsPattern} | Select-Object {$_.FullName}
 
-    Write-Host "Found" $matchingProjects.Count "projects matching pattern '"$projectsPattern
+    Write-Host "Found" $matchingProjects.Count "projects matching pattern '"$projectsPattern "'"
 
     If ($matchingProjects.Count -eq 0) {
       Write-Host "No projects match pattern, aborting."
@@ -36,7 +36,7 @@ function cover
       $projectName += $shortName
       $projectName += ".csproj"
 
-      Write-Host "Covering project" $shortName " with coverage filter" $coverageFilter
+      Write-Host "Covering project" $projectName " with coverage filter" $coverageFilter
 
       .\OpenCover.*\tools\OpenCover.Console.exe -oldstyle -mergeoutput -register:user "-target:C:\Program Files\dotnet\dotnet.exe" "-targetargs:test $projectName" -returntargetcode "-filter:$coverageFilter" -hideskipped:all "-output:$coverageXmlPath" -log:All $openCoverAdditionalParameters
       if ($LastExitCode -ne 0) { $host.SetShouldExit($LastExitCode) }
