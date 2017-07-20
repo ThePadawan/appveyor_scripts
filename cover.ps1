@@ -13,7 +13,7 @@ function cover
   )
   process
   {
-    $matchingProjects = ls $projectsPattern
+    $matchingProjects = ls . -Recurse | Where-Object {$_.FullName -match $projectsPattern}
 
     Write-Host "Found" $matchingProjects.Count "projects matching pattern '"$projectsPattern
 
@@ -39,8 +39,10 @@ function cover
       Write-Host "Covering project" $shortName " with coverage filter" $coverageFilter
 
       .\OpenCover.*\tools\OpenCover.Console.exe -oldstyle -mergeoutput -register:user "-target:C:\Program Files\dotnet\dotnet.exe" "-targetargs:test $projectName" -returntargetcode "-filter:$coverageFilter" -hideskipped:all "-output:$coverageXmlPath" -log:All $openCoverAdditionalParameters
+      if ($LastExitCode -ne 0) { $host.SetShouldExit($LastExitCode) }
     }
 
     codecov -f $coverageXmlPath -X gcov
+    if ($LastExitCode -ne 0) { $host.SetShouldExit($LastExitCode) }
   }
 }
